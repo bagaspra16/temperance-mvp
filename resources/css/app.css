@@ -1,0 +1,163 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+.btn {
+    @apply px-4 py-2 rounded font-medium transition duration-200;
+}
+
+.btn-primary {
+    @apply bg-secondary text-primary hover:bg-opacity-80;
+}
+
+.btn-secondary {
+    @apply bg-primary text-secondary border border-secondary hover:bg-opacity-80;
+}
+
+.card {
+    @apply bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-700;
+}
+
+.input {
+    @apply bg-gray-800 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-secondary;
+}
+
+/* Dark theme styles */
+body {
+    @apply bg-primary text-gray-200;
+}
+
+.navbar {
+    @apply bg-gray-900 text-gray-200;
+}
+
+/* Sidebar */
+.sidebar {
+    @apply bg-gray-900 text-gray-200;
+}
+
+.sidebar-item {
+    @apply px-4 py-2 hover:bg-gray-800 transition duration-200;
+}
+
+.sidebar-item.active {
+    @apply border-l-4 border-secondary bg-gray-800;
+}
+
+/* Form elements */
+label {
+    @apply text-gray-300 mb-1 block;
+}
+
+select {
+    @apply bg-gray-800 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-secondary;
+}
+
+textarea {
+    @apply bg-gray-800 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-secondary;
+}
+
+/* Tables */
+.table {
+    @apply w-full bg-gray-800 rounded-lg overflow-hidden;
+}
+
+.table th {
+    @apply bg-gray-900 px-4 py-2 text-left text-secondary font-medium;
+}
+
+.table td {
+    @apply px-4 py-2 border-t border-gray-700;
+}
+
+/* Badges */
+.badge {
+    @apply inline-block rounded-full px-3 py-1 text-xs font-medium;
+}
+
+/* Progress bars */
+.progress {
+    @apply bg-gray-700 rounded-full h-2 overflow-hidden;
+}
+
+.progress-bar {
+    @apply bg-secondary h-full;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    @apply relative inline-block w-10 h-5;
+}
+
+.toggle-switch input {
+    @apply opacity-0 w-0 h-0;
+}
+
+.toggle-slider {
+    @apply absolute cursor-pointer inset-0 bg-gray-700 rounded-full transition-all duration-300;
+}
+
+.toggle-slider:before {
+    @apply absolute h-4 w-4 left-0.5 bottom-0.5 bg-white rounded-full transition-all duration-300;
+    content: "";
+}
+
+input:checked + .toggle-slider {
+    @apply bg-secondary;
+}
+
+input:checked + .toggle-slider:before {
+    @apply transform translate-x-5;
+}
+
+/* Animation classes */
+.fade-in {
+    @apply transition-opacity duration-300 ease-in-out;
+}
+
+/* Calendar styling */
+.calendar-day {
+    @apply w-10 h-10 flex items-center justify-center rounded-full cursor-pointer;
+}
+
+.calendar-day.active {
+    @apply bg-secondary text-primary;
+}
+
+.calendar-day.completed {
+    @apply bg-green-600 text-white;
+}
+
+.calendar-day.missed {
+    @apply bg-red-600 text-white;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gray-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-600;
+}
