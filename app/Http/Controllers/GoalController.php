@@ -20,7 +20,7 @@ class GoalController extends Controller
         $goals = Goal::with('category')
             ->where('user_id', Auth::id())
             ->orderBy('end_date')
-            ->get();
+            ->paginate(9);
             
         return view('goals.index', compact('goals'));
     }
@@ -94,10 +94,10 @@ class GoalController extends Controller
         $this->authorize('view', $goal);
         
         $habits = $goal->habits()->orderBy('title')->get();
-        $progressLogs = $goal->progressLogs()->orderBy('progress_date', 'desc')->get();
+        $updates = $goal->updates()->orderBy('progress_date', 'desc')->get();
         $progress = $goal->calculateProgress();
         
-        return view('goals.show', compact('goal', 'habits', 'progressLogs', 'progress'));
+        return view('goals.show', compact('goal', 'habits', 'updates', 'progress'));
     }
 
     /**

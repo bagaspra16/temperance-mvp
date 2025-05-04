@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Traits\HasUuid;
+use App\Traits\HasCreatorAndUpdater;
 use App\Traits\CustomSoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DailyTask extends Model
 {
-    use HasFactory, HasUuid, CustomSoftDeletes;
+    use HasFactory, HasUuid, CustomSoftDeletes, HasCreatorAndUpdater;
 
     /**
      * Indicates if the model should be timestamped.
@@ -24,14 +25,12 @@ class DailyTask extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'template_id',
         'title',
-        'start_time',
-        'end_time',
+        'description',
         'category_id',
-        'deleted',
-        'created_by',
-        'updated_by',
+        'template_id',
+        'start_time',
+        'end_time'
     ];
 
     /**
@@ -56,7 +55,7 @@ class DailyTask extends Model
     }
 
     /**
-     * Get the category associated with this task.
+     * Get the category that owns the daily task.
      */
     public function category()
     {

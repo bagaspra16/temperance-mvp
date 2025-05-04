@@ -74,29 +74,29 @@ class GoalProgressLogController extends Controller
         $this->authorize('update', $goal);
         
         $validator = Validator::make($request->all(), [
-            'progress_value' => 'required|integer|min:1',
-            'progress_date' => 'required|date',
-            'note' => 'nullable|string',
+            'value' => 'required|numeric|min:0.01',
+            'notes' => 'nullable|string|max:1000',
         ]);
 
         if ($validator->fails()) {
             return redirect()
-                ->route('goals.progress.create', $goal)
+                ->route('goals.show', $goal)
                 ->withErrors($validator)
                 ->withInput();
         }
 
-        $log = $this->goalTrackingService->logProgress(
-            $goal,
-            $request->progress_value,
-            Carbon::parse($request->progress_date),
-            $request->note,
-            Auth::user()
-        );
+        $update = new GoalProgressLog();
+        $update->goal_id = $goal->id;
+        $update->user_id = Auth::id();
+        $update->progress_value = $request->value;
+        $update->progress_date = now();
+        $update->note = $request->notes;
+        $update->created_by = Auth::id();
+        $update->save();
 
         return redirect()
             ->route('goals.show', $goal)
-            ->with('success', 'Progress logged successfully.');
+            ->with('success', 'Progress update added successfully.');
     }
 
     /**
@@ -168,18 +168,22 @@ class GoalProgressLogController extends Controller
     /**
      * Remove the specified progress log from storage.
      *
-     * @param  \App\Models\GoalProgressLog  $progressLog
+     * @param  \App\Models\Goal  $goal
+     * @param  \App\Models\GoalProgressLog  $update
      * @return \Illuminate\Http\Response
      */
-    public function destroy(GoalProgressLog $progressLog)
+    public function destroy(Goal $goal, GoalProgressLog $update)
     {
-        $this->authorize('delete', $progressLog);
+        $this->authorize('delete', $goal);
         
-        $goal = $progressLog->goal;
-        $progressLog->delete();
+        if ($update->goal_id !== $goal->id) {
+            abort(404);
+        }
+        
+        $update->delete();
         
         return redirect()
             ->route('goals.show', $goal)
-            ->with('success', 'Progress log deleted successfully.');
+            ->with('success', 'Progress update deleted successfully.');
     }
 } 

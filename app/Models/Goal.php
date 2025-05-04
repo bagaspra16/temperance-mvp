@@ -6,6 +6,7 @@ use App\Traits\HasUuid;
 use App\Traits\CustomSoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Goal extends Model
 {
@@ -81,9 +82,19 @@ class Goal extends Model
     /**
      * Get the progress logs for this goal.
      */
-    public function progressLogs()
+    public function updates()
     {
         return $this->hasMany(GoalProgressLog::class);
+    }
+
+    /**
+     * Get the current value of the goal.
+     */
+    protected function currentValue(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->updates()->sum('progress_value')
+        );
     }
 
     /**
@@ -93,10 +104,8 @@ class Goal extends Model
      */
     public function calculateProgress()
     {
-        $totalProgress = $this->progressLogs()->sum('progress_value');
-        
         return $this->target_value > 0 
-            ? min(100, ($totalProgress / $this->target_value) * 100) 
+            ? min(100, ($this->current_value / $this->target_value) * 100) 
             : 0;
     }
 }

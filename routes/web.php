@@ -9,6 +9,7 @@ use App\Http\Controllers\GoalProgressLogController;
 use App\Http\Controllers\WeeklyEvaluationController;
 use App\Http\Controllers\ScheduleTemplateController;
 use App\Http\Controllers\UserPreferenceController;
+use App\Http\Controllers\DailyTaskController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -41,6 +42,11 @@ Route::middleware(['auth'])->group(function () {
     // Goals
     Route::get('/goals/dashboard', [GoalController::class, 'dashboard'])->name('goals.dashboard');
     Route::resource('goals', GoalController::class);
+    Route::post('/goals/{goal}/updates', [GoalProgressLogController::class, 'store'])->name('goals.updates.store');
+    Route::delete('/goals/{goal}/updates/{update}', [GoalProgressLogController::class, 'destroy'])->name('goals.updates.destroy');
+    
+    // Daily Tasks
+    Route::resource('dailyTasks', DailyTaskController::class);
     
     // Habits
     Route::get('/habits/dashboard', [HabitController::class, 'dashboard'])->name('habits.dashboard');
