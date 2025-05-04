@@ -7,36 +7,28 @@ use Illuminate\Database\Eloquent\Builder;
 trait CustomSoftDeletes
 {
     /**
-     * Boot the custom soft deletes trait for a model.
+     * Boot the soft deleting trait for a model.
      *
      * @return void
      */
     public static function bootCustomSoftDeletes()
     {
-        static::addGlobalScope('not_deleted', function (Builder $builder) {
+        static::addGlobalScope('notDeleted', function ($builder) {
             $builder->where('deleted', false);
         });
     }
 
     /**
-     * Force a hard delete on a soft deleted model.
-     *
-     * @return bool|null
-     */
-    public function forceDelete()
-    {
-        return $this->delete();
-    }
-
-    /**
      * Perform the actual delete query on this model instance.
      *
-     * @return mixed
+     * @return void
      */
-    protected function performDeleteOnModel()
+    public function delete()
     {
-        $this->deleted = true;
-        return $this->save();
+        if ($this->exists) {
+            $this->deleted = true;
+            $this->save();
+        }
     }
 
     /**
@@ -46,8 +38,22 @@ trait CustomSoftDeletes
      */
     public function restore()
     {
-        $this->deleted = false;
-        return $this->save();
+        if ($this->exists) {
+            $this->deleted = false;
+            return $this->save();
+        }
+
+        return false;
+    }
+
+    /**
+     * Force delete the model.
+     *
+     * @return bool|null
+     */
+    public function forceDelete()
+    {
+        return parent::delete();
     }
 
     /**

@@ -60,7 +60,7 @@ class Category extends Model
     }
 
     /**
-     * Get the daily tasks associated with this category.
+     * Get the daily tasks for the category.
      */
     public function dailyTasks()
     {

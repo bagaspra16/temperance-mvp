@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserPreference extends Model
 {
-    use HasFactory, HasUuid, SoftDeletes;
+    use HasFactory, HasUuid, CustomSoftDeletes;
 
     /**
      * Indicates if the model should be timestamped.
